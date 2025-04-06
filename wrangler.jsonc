@@ -6,6 +6,9 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "acme-rest-api",
 	"main": "src/index.ts",
+	"compatibility_flags": [
+    	"nodejs_compat"
+  	],
 	"compatibility_date": "2025-04-06",
 	"assets": {
 		"binding": "ASSETS",
@@ -13,7 +16,14 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	"d1_databases": [
+    	{
+      		"binding": "DB",
+      		"database_name": "acme_rest_api",
+      		"database_id": "0f651a57-45d3-4856-bb91-32a39c09dcb1"
+    	}
+  	]
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
