@@ -31,3 +31,8 @@ lerna-debug.log*
 
 # misc
 .DS_Store
+
+# certs
+public.pem
+private.pem
+jwks.json
