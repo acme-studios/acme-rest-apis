@@ -1,0 +1,13 @@
+{
+    "keys": [
+      {
+        "kty": "RSA",
+        "use": "sig",
+        "alg": "RS256",
+        "kid": "acme-namer01-kid",
+        "n": "5WuKa-rnTVDnE_JNAF1JmOsME5N8gWOKl190IDWaAc_lGVhiVwgG0mjMTugQfcG8X0rPhqU70PwwsNYE1bcfQJKcBv1XRBhjT9VCq05rhujdFyoS1y1l0UAL_900BO1ZSHGMciiKNGPwjkk1OPlpnboTb0On3hv3X41xBEWE4xFBHcakvthMr2AmQ2Qd0BICCXtXRMAE1pShPy4UwZptjvyOdeSzHTgldjYgv3JuM2xKqajy-LZFLVtNCN1E6e8FK5KiDSS2X6uGo3vBrdxTa22jd6vheHjzfG4CDyXYUQ_bc7MScq37aQtVK4HCHq62N61qnlrgogQYBaJohoKsvw",
+        "e": "AQAB"
+      }
+    ]
+  }
+  
