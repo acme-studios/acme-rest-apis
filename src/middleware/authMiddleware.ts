@@ -20,7 +20,7 @@ export const authMiddleware: MiddlewareHandler<{
   const token = authHeader.split(' ')[1]
 
   try {
-    const publicKey = c.env.PUBLIC_KEY // ✅ Your Wrangler secret
+    const publicKey = c.env.PUBLIC_KEY // Your Wrangler secret
 
     const decoded = jwt.verify(token, publicKey, {
       algorithms: ['RS256'],

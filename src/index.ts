@@ -3,7 +3,7 @@ import { Context } from 'hono'
 import bcrypt from 'bcryptjs'
 import jwtLib from 'jsonwebtoken'
 import { authMiddleware } from './middleware/authMiddleware'
-import jwks from './jwks.json'
+import jwks from '../jwks.json'
 
 const app = new Hono<{ Bindings: { DB: D1Database; PRIVATE_KEY: string; PUBLIC_KEY: string } }>()
 
@@ -43,7 +43,7 @@ app.post('/api/register', async (c: Context) => {
       c.env.PRIVATE_KEY,
       {
         algorithm: 'RS256',
-        keyid: 'acme-rest-key',
+        keyid: 'acme-namer01-kid',
         expiresIn: '1h'
       }
     )
@@ -84,7 +84,7 @@ app.post('/api/login', async (c: Context) => {
       c.env.PRIVATE_KEY,
       {
         algorithm: 'RS256',
-        keyid: 'acme-rest-key',
+        keyid: 'acme-namer01-kid',
         expiresIn: '1h'
       }
     )

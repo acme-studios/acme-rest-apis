@@ -36,3 +36,6 @@ lerna-debug.log*
 public.pem
 private.pem
 jwks.json
+
+# openapi
+openapi.yaml

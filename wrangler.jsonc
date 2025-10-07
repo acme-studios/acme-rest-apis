@@ -19,16 +19,16 @@
 	},
 	"d1_databases": [
     	{
-      		"binding": "DB",
-      		"database_name": "acme_rest_api",
-      		"database_id": "0f651a57-45d3-4856-bb91-32a39c09dcb1"
-    	}
-  	]
+			"binding": "DB",
+			"database_name": "acme-rest-db",
+			"database_id": "ee0b4511-fb6d-4251-8483-3d7ede180618"
+		  }
+  	],
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
 	 */
-	// "placement": { "mode": "smart" },
+	"placement": { "mode": "smart" },
 
 	/**
 	 * Bindings
