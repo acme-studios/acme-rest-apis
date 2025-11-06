@@ -1,37 +1,77 @@
 # Social Media API - Cloudflare API Shield Demo
 
-Enterprise-grade social media REST API demonstrating comprehensive Cloudflare API Shield security features.
+Enterprise-grade social media REST API demonstrating Cloudflare API Shield security features.
 
 ## Quick Start
 
-### 1. Install Dependencies
+### Local Development
+
 ```bash
-npm install
+# One-command setup
+./scripts/setup-local.sh
+
+# Start dev server
+npm run dev
 ```
 
-### 2. Run Database Migration
+Your API runs at `http://localhost:8787`
+
+### Production Deployment
+
 ```bash
-wrangler d1 migrations apply acme-rest-db --remote
+# One-command deployment
+./scripts/setup-remote.sh
 ```
 
-### 3. Deploy to Cloudflare
-```bash
-npm run deploy
-```
+Your API deploys to `https://acme-rest-api.YOUR-SUBDOMAIN.workers.dev`
 
-### 4. Test with Postman
-1. Import `postman_collection.json` into Postman
-2. Update `base_url` variable to your Worker URL
-3. Run tests
+## Testing
 
-### 5. Seed Data (Optional)
+### Postman Collections
+
+Two collections for different testing scenarios:
+
+**`postman_collection.json`** - Manual testing
+- Simulates real-world usage
+- Shows validation and security features
+- Use for demos and manual testing
+
+**`postman_collection_automated.json`** - Automated testing
+- Auto-generates unique users each run
+- All tests pass without database cleanup
+- Use for CI/CD and repeated testing
+
+**Setup:**
+1. Import collection into Postman
+2. Update `base_url` variable:
+   - Local: `http://localhost:8787`
+   - Remote: `https://your-worker.workers.dev`
+3. Run collection
+
+### Seed Data
+
+Populate database with test users and content:
+
 ```bash
+# Local
+node scripts/seed-data.js http://localhost:8787
+
+# Remote
 node scripts/seed-data.js https://your-worker.workers.dev
 ```
 
-### 6. Simulate Traffic (Optional)
+Creates 8 users (free, premium, enterprise tiers) with posts, likes, comments, and follows.
+
+### Traffic Simulation
+
+Generate realistic API traffic for dashboard metrics:
+
 ```bash
-node scripts/simulate-traffic.js https://your-worker.workers.dev 30 60
+# Run for 30 minutes, activity every 30 seconds
+node scripts/simulate-traffic.js https://your-worker.workers.dev 30 30
+
+# Run indefinitely (Ctrl+C to stop)
+node scripts/simulate-traffic.js https://your-worker.workers.dev
 ```
 
 ## Features
@@ -44,25 +84,40 @@ node scripts/simulate-traffic.js https://your-worker.workers.dev 30 60
 - Tier-based access control
 
 
-## Testing
+## API Endpoints
 
-- **Postman Collection**: `postman_collection.json`
-- **Seed Script**: `scripts/seed-data.js`
-- **Traffic Simulator**: `scripts/simulate-traffic.js`
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/api/auth/register` | No | Register user with tier |
+| POST | `/api/auth/login` | No | Login and get JWT |
+| GET | `/api/posts` | No | List posts (filtering, sorting) |
+| GET | `/api/posts/:id` | No | Get single post |
+| GET | `/api/users/:id/profile` | No | Get user profile |
+| GET | `/api/users/:id/followers` | No | Get followers/following |
+| POST | `/api/posts` | Yes | Create post |
+| POST | `/api/posts/:id/like` | Yes | Like post |
+| POST | `/api/posts/:id/comment` | Yes | Comment on post |
+| PUT | `/api/posts/:id` | Yes | Update post |
+| PATCH | `/api/users/profile` | Yes | Update profile |
+| PATCH | `/api/users/:id/follow` | Yes | Follow/unfollow user |
+| PATCH | `/api/posts/:id/share` | Yes (Premium+) | Share post |
+| DELETE | `/api/posts/:id` | Yes | Delete post |
+| DELETE | `/api/users/account` | Yes | Delete account |
 
-## Local Development
+## Monitoring
 
 ```bash
-npm run dev
+# View real-time logs
+wrangler tail
+
+# Query database
+wrangler d1 execute acme-rest-db --remote --command "SELECT COUNT(*) FROM users;"
 ```
-
-Access at `http://localhost:8787`
-
 
 ## Tech Stack
 
-- **Framework**: Hono
-- **Runtime**: Cloudflare Workers
-- **Database**: Cloudflare D1 (SQLite)
-- **Auth**: JWT with RS256
-- **Security**: Cloudflare API Shield
+- Hono web framework on Cloudflare Workers
+- Cloudflare D1 (SQLite) database
+- JWT authentication with RS256
+- bcrypt password hashing
+- Cloudflare API Shield integration

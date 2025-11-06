@@ -2,15 +2,54 @@
 
 ## Overview
 
-These scripts help you populate your API with data and simulate realistic traffic for dashboard metrics.
+These scripts help you set up, populate, and test your API with data and realistic traffic.
 
 ## Prerequisites
 
 - Node.js installed (v18+)
-- API deployed and accessible
-- Database migrations applied
+- Wrangler CLI installed
+- RSA keys (`private-key.pem`, `public-key.pem`) in project root
 
 ## Scripts
+
+### 0. Setup Scripts (New!)
+
+#### `setup-local.sh` - One-command local setup
+Automates the entire local development setup process.
+
+**What it does:**
+- Creates `.dev.vars` with your RSA keys
+- Installs dependencies
+- Applies migrations to local database
+- Verifies database tables
+
+**Usage:**
+```bash
+./scripts/setup-local.sh
+```
+
+After running, just do:
+```bash
+npm run dev
+```
+
+---
+
+#### `setup-remote.sh` - One-command remote deployment
+Automates the entire remote deployment process.
+
+**What it does:**
+- Applies migrations to remote database
+- Uploads secrets (PRIVATE_KEY, PUBLIC_KEY)
+- Deploys Worker to Cloudflare
+- Verifies deployment
+
+**Usage:**
+```bash
+./scripts/setup-remote.sh
+```
+
+---
 
 ### 1. Seed Data (`seed-data.js`)
 
