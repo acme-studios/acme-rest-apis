@@ -9,6 +9,7 @@
 	"compatibility_flags": [
     	"nodejs_compat"
   	],
+	"account_id": "57aa14dc6cb0b9336c2980dce332a7aa",
 	"compatibility_date": "2025-04-06",
 	"assets": {
 		"binding": "ASSETS",
@@ -21,7 +22,7 @@
     	{
 			"binding": "DB",
 			"database_name": "acme-rest-db",
-			"database_id": "ee0b4511-fb6d-4251-8483-3d7ede180618"
+			"database_id": "cf0a3155-5cf1-439e-88ad-e6bce153c811"
 		  }
   	],
 	/**

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media API - Documentation</title>
+  <meta name="description" content="Enterprise-grade social media REST API with Cloudflare API Shield">
+  
+  <!-- Scalar API Reference -->
+  <script
+    id="api-reference"
+    data-url="/openapi.yaml"></script>
+  
+  <style>
+    /* Custom theme variables - centralized styling */
+    :root {
+      /* Light theme colors */
+      --scalar-color-1: #121212;
+      --scalar-color-2: #2a2a2a;
+      --scalar-color-3: #f5f5f5;
+      --scalar-color-accent: #F6821F; /* Cloudflare Orange */
+      
+      /* Background colors */
+      --scalar-background-1: #fafafa; /* Off-white */
+      --scalar-background-2: #ffffff;
+      --scalar-background-3: #f5f5f5;
+      --scalar-background-accent: #F6821F;
+      
+      /* Sidebar */
+      --scalar-sidebar-background-1: #ffffff;
+      --scalar-sidebar-item-hover-color: #F6821F;
+      --scalar-sidebar-item-active-background: #fff5ed;
+      --scalar-sidebar-border-color: #e5e5e5;
+      
+      /* Borders and shadows */
+      --scalar-border-color: #e5e5e5;
+      --scalar-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --scalar-shadow-2: 0 4px 12px rgba(0, 0, 0, 0.08);
+      
+      /* Typography - you can customize these */
+      --scalar-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      --scalar-font-code: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+      
+      /* Spacing */
+      --scalar-radius: 8px;
+      --scalar-radius-lg: 12px;
+      --scalar-radius-xl: 16px;
+      
+      /* Buttons */
+      --scalar-button-1: #F6821F;
+      --scalar-button-1-hover: #e57310;
+      
+      /* Code blocks */
+      --scalar-code-background: #1e1e1e;
+    }
+    
+    /* Dark theme */
+    .dark-mode {
+      --scalar-color-1: #f5f5f5;
+      --scalar-color-2: #d4d4d4;
+      --scalar-color-3: #a3a3a3;
+      --scalar-color-accent: #F6821F;
+      
+      --scalar-background-1: #000000; /* Pure black */
+      --scalar-background-2: #0a0a0a;
+      --scalar-background-3: #1a1a1a;
+      --scalar-background-accent: #F6821F;
+      
+      --scalar-sidebar-background-1: #0a0a0a;
+      --scalar-sidebar-item-hover-color: #F6821F;
+      --scalar-sidebar-item-active-background: #1a1a1a;
+      --scalar-sidebar-border-color: #2a2a2a;
+      
+      --scalar-border-color: #2a2a2a;
+      --scalar-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --scalar-shadow-2: 0 4px 12px rgba(0, 0, 0, 0.5);
+      
+      --scalar-button-1: #F6821F;
+      --scalar-button-1-hover: #ff9940;
+      
+      --scalar-code-background: #0a0a0a;
+    }
+    
+    /* Custom animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Smooth transitions */
+    * {
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--scalar-background-2);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--scalar-color-3);
+      border-radius: 5px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--scalar-color-accent);
+    }
+    
+    /* Loading animation */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: var(--scalar-background-1);
+    }
+    
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--scalar-border-color);
+      border-top-color: var(--scalar-color-accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Custom header styling */
+    .api-reference-header {
+      background: linear-gradient(135deg, var(--scalar-background-1) 0%, var(--scalar-background-2) 100%);
+      border-bottom: 1px solid var(--scalar-border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .api-reference-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--scalar-color-1);
+    }
+    
+    .api-reference-logo svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--scalar-color-accent);
+    }
+    
+    /* Accent highlights */
+    .scalar-card {
+      border-left: 3px solid var(--scalar-color-accent);
+    }
+    
+    /* Method badges with better contrast */
+    .http-method-get {
+      background: #10b981 !important;
+      color: white !important;
+    }
+    
+    .http-method-post {
+      background: #3b82f6 !important;
+      color: white !important;
+    }
+    
+    .http-method-put,
+    .http-method-patch {
+      background: #f59e0b !important;
+      color: white !important;
+    }
+    
+    .http-method-delete {
+      background: #ef4444 !important;
+      color: white !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading state -->
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <script type="module">
+    import { ApiReference } from 'https://cdn.jsdelivr.net/npm/@scalar/api-reference@latest'
+
+    // Hide loading spinner once Scalar loads
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.getElementById('loading').style.display = 'none';
+      }, 500);
+    });
+
+    // Initialize Scalar API Reference
+    const configuration = {
+      spec: {
+        url: '/openapi.yaml',
+      },
+      
+      // Theme configuration
+      theme: 'default',
+      
+      // Dark mode - auto-detect system preference
+      darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+      
+      // Layout configuration
+      layout: 'modern',
+      
+      // Show/hide elements
+      showSidebar: true,
+      
+      // Custom CSS (additional to our styles above)
+      customCss: `
+        /* Additional custom styles */
+        .scalar-api-reference {
+          animation: fadeIn 0.3s ease-in;
+        }
+        
+        /* Enhance copy buttons */
+        button[aria-label*="Copy"] {
+          background: var(--scalar-color-accent) !important;
+          color: white !important;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+        }
+        
+        button[aria-label*="Copy"]:hover {
+          background: var(--scalar-button-1-hover) !important;
+          transform: scale(1.05);
+        }
+        
+        /* Enhance "Try it" buttons */
+        button[type="submit"] {
+          background: var(--scalar-color-accent) !important;
+          color: white !important;
+          font-weight: 600;
+          padding: 0.75rem 1.5rem;
+          border-radius: 8px;
+          transition: all 0.2s ease;
+        }
+        
+        button[type="submit"]:hover {
+          background: var(--scalar-button-1-hover) !important;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(246, 130, 31, 0.3);
+        }
+        
+        /* Enhance endpoint cards */
+        .scalar-card {
+          border-radius: var(--scalar-radius-lg);
+          box-shadow: var(--scalar-shadow-1);
+          transition: all 0.2s ease;
+        }
+        
+        .scalar-card:hover {
+          box-shadow: var(--scalar-shadow-2);
+          transform: translateY(-2px);
+        }
+        
+        /* Enhance code blocks */
+        pre {
+          border-radius: var(--scalar-radius);
+          border: 1px solid var(--scalar-border-color);
+        }
+        
+        /* Smooth scrolling */
+        html {
+          scroll-behavior: smooth;
+        }
+      `,
+      
+      // Authentication configuration
+      authentication: {
+        preferredSecurityScheme: 'bearerAuth',
+        apiKey: {
+          token: '',
+        },
+      },
+      
+      // Default HTTP client
+      defaultHttpClient: {
+        targetKey: 'javascript',
+        clientKey: 'fetch',
+      },
+      
+      // Search configuration
+      searchHotKey: 'k',
+      
+      // Hide Scalar branding (optional)
+      hideDarkModeToggle: false,
+      hideDownloadButton: false,
+      
+      // Metadata
+      metaData: {
+        title: 'Social Media API - Documentation',
+        description: 'Enterprise-grade social media REST API with Cloudflare API Shield',
+        ogDescription: 'Interactive API documentation for Social Media API',
+        ogTitle: 'Social Media API Docs',
+        ogImage: 'https://api-shield.namer01.cfpartnerskyflash.com/og-image.png',
+        twitterCard: 'summary_large_image',
+      },
+    }
+
+    // Mount the API reference
+    const apiReference = document.getElementById('api-reference')
+    ApiReference(apiReference, configuration)
+
+    // Listen for theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      document.body.classList.toggle('dark-mode', e.matches);
+    });
+
+    // Set initial theme
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('dark-mode');
+    }
+  </script>
+</body>
+</html>

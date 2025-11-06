@@ -10,6 +10,7 @@ type Bindings = {
   DB: D1Database
   PRIVATE_KEY: string
   PUBLIC_KEY: string
+  ASSETS: Fetcher
 }
 
 type Variables = {

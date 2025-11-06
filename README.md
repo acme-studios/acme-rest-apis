@@ -14,7 +14,10 @@ Enterprise-grade social media REST API demonstrating Cloudflare API Shield secur
 npm run dev
 ```
 
-Your API runs at `http://localhost:8787`
+**Access:**
+- API Documentation: `http://localhost:8787`
+- API Endpoints: `http://localhost:8787/api/*`
+- Health Check: `http://localhost:8787/health`
 
 ### Production Deployment
 
@@ -23,7 +26,20 @@ Your API runs at `http://localhost:8787`
 ./scripts/setup-remote.sh
 ```
 
-Your API deploys to `https://acme-rest-api.YOUR-SUBDOMAIN.workers.dev`
+**Access:**
+- API Documentation: `https://acme-rest-api.YOUR-SUBDOMAIN.workers.dev`
+- API Endpoints: `https://acme-rest-api.YOUR-SUBDOMAIN.workers.dev/api/*`
+
+## API Documentation
+
+Interactive API documentation powered by Scalar:
+- Beautiful light and dark themes
+- Try endpoints directly from docs
+- Copy-paste code examples
+- Real-time request/response testing
+- Comprehensive endpoint reference
+
+**View locally:** `http://localhost:8787` after running `npm run dev`
 
 ## Testing
 

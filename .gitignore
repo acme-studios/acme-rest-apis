@@ -33,8 +33,8 @@ lerna-debug.log*
 .DS_Store
 
 # certs
-public.pem
-private.pem
+public-key.pem
+private-key.pem
 
 # openapi
 openapi.yaml
