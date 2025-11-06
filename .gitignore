@@ -38,3 +38,6 @@ private.pem
 
 # openapi
 openapi.yaml
+
+# project artifacts (internal documentation)
+project-artifacts/

@@ -1,0 +1,649 @@
+{
+  "info": {
+    "name": "Social Media API - Cloudflare API Shield Demo",
+    "description": "Complete test suite for social media API with 15 endpoints demonstrating API Shield features",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://acme-rest-api.YOUR-SUBDOMAIN.workers.dev",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "post_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register Free User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('jwt_token', response.token);",
+                  "    pm.collectionVariables.set('user_id', response.user.id);",
+                  "    pm.test('User registered successfully', () => {",
+                  "        pm.expect(response.user.tier).to.eql('free');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alice Free\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"username\": \"alicefree\",\n  \"tier\": \"free\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Premium User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bob Premium\",\n  \"email\": \"bob@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"username\": \"bobpremium\",\n  \"tier\": \"premium\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Enterprise User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Charlie Enterprise\",\n  \"email\": \"charlie@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"username\": \"charlieent\",\n  \"tier\": \"enterprise\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('jwt_token', response.token);",
+                  "    pm.test('Login successful', () => {",
+                  "        pm.expect(response.token).to.be.a('string');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alice@example.com\",\n  \"password\": \"SecurePass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Posts (Create)",
+      "item": [
+        {
+          "name": "Create Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('post_id', response.post.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Hello world! This is my first post on this amazing social media platform. #firstpost\",\n  \"media_url\": \"https://picsum.photos/800/600\",\n  \"media_type\": \"image\",\n  \"visibility\": \"public\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/posts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts"]
+            }
+          }
+        },
+        {
+          "name": "Create Private Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"This is a private post only I can see.\",\n  \"visibility\": \"private\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/posts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts"]
+            }
+          }
+        },
+        {
+          "name": "Create Post - Followers Only",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"This post is only visible to my followers.\",\n  \"visibility\": \"followers_only\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/posts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Posts (Read)",
+      "item": [
+        {
+          "name": "List Posts - Recent",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/posts?sort=recent&limit=10&offset=0&visibility=public",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts"],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "recent"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "visibility",
+                  "value": "public"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Posts - Popular",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/posts?sort=popular&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts"],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "popular"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Posts - Trending",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/posts?sort=trending&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts"],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "trending"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/posts/{{post_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "{{post_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Social Interactions",
+      "item": [
+        {
+          "name": "Like Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/posts/{{post_id}}/like",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "{{post_id}}", "like"]
+            }
+          }
+        },
+        {
+          "name": "Comment on Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Great post! I really enjoyed reading this.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/posts/{{post_id}}/comment",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "{{post_id}}", "comment"]
+            }
+          }
+        },
+        {
+          "name": "Reply to Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Thanks for your comment!\",\n  \"parent_comment_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/posts/{{post_id}}/comment",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "{{post_id}}", "comment"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. User Profile",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Software engineer | Tech enthusiast | Coffee lover ☕\",\n  \"location\": \"San Francisco, CA\",\n  \"website\": \"https://example.com\",\n  \"avatar_url\": \"https://i.pravatar.cc/300\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Get Followers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}/followers?type=followers",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}", "followers"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "followers"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Following",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}/followers?type=following",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}", "followers"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "following"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Follow System",
+      "item": [
+        {
+          "name": "Follow User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/2/follow",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "2", "follow"]
+            }
+          }
+        },
+        {
+          "name": "Unfollow User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/2/follow",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "2", "follow"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Premium Features",
+      "item": [
+        {
+          "name": "Share Post (Premium)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/posts/{{post_id}}/share",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "{{post_id}}", "share"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Update & Delete",
+      "item": [
+        {
+          "name": "Update Post",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Updated post content with new information!\",\n  \"visibility\": \"public\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/posts/{{post_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "{{post_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/posts/{{post_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "posts", "{{post_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"SecurePass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/account",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "account"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Public Endpoints",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "JWKS Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/.well-known/jwks.json",
+              "host": ["{{base_url}}"],
+              "path": [".well-known", "jwks.json"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
