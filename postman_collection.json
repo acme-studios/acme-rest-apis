@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "Social Media API - Cloudflare API Shield Demo",
+    "name": "Social Media API",
     "description": "Complete test suite for social media API with 15 endpoints demonstrating API Shield features",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },

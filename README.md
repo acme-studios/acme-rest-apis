@@ -1,6 +1,6 @@
-# Social Media API - Cloudflare API Shield Demo
+# Social Media API
 
-Enterprise-grade social media REST API demonstrating Cloudflare API Shield security features.
+A REST API for social media interactions with JWT authentication and role-based access control.
 
 ## Quick Start
 
