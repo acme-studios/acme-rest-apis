@@ -1,190 +1,101 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Social Media API - Documentation</title>
-  <meta name="description" content="Enterprise-grade social media REST API with Cloudflare API Shield">
-  
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-  </style>
-</head>
-<body>
-  <!-- Redoc container -->
-  <div id="redoc-container"></div>
-  
-  <!-- Load Redoc -->
-  <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
-  
-  <script>
-    // Detect system theme preference
-    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    // Stunning theme configuration
-    const theme = {
-      colors: {
-        primary: {
-          main: '#F6821F', // Cloudflare Orange
-        },
-        success: {
-          main: '#10b981',
-        },
-        warning: {
-          main: '#f59e0b',
-        },
-        error: {
-          main: '#ef4444',
-        },
-        text: {
-          primary: isDarkMode ? '#f5f5f5' : '#1a1a1a',
-          secondary: isDarkMode ? '#a3a3a3' : '#666666',
-        },
-        border: {
-          dark: isDarkMode ? '#2a2a2a' : '#e5e5e5',
-          light: isDarkMode ? '#1a1a1a' : '#f5f5f5',
-        },
-        responses: {
-          success: {
-            color: '#10b981',
-            backgroundColor: isDarkMode ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.05)',
-          },
-          error: {
-            color: '#ef4444',
-            backgroundColor: isDarkMode ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.05)',
-          },
-          redirect: {
-            color: '#3b82f6',
-            backgroundColor: isDarkMode ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.05)',
-          },
-          info: {
-            color: '#06b6d4',
-            backgroundColor: isDarkMode ? 'rgba(6, 182, 212, 0.1)' : 'rgba(6, 182, 212, 0.05)',
-          },
-        },
-        http: {
-          get: '#10b981',
-          post: '#3b82f6',
-          put: '#f59e0b',
-          options: '#06b6d4',
-          patch: '#8b5cf6',
-          delete: '#ef4444',
-          basic: '#999',
-          link: '#F6821F',
-          head: '#9012fe',
-        },
-      },
-      schema: {
-        linesColor: isDarkMode ? '#2a2a2a' : '#e5e5e5',
-        defaultDetailsWidth: '75%',
-        typeNameColor: isDarkMode ? '#a3a3a3' : '#666666',
-        typeTitleColor: isDarkMode ? '#f5f5f5' : '#1a1a1a',
-        requireLabelColor: '#ef4444',
-        labelsTextSize: '0.9em',
-        nestingSpacing: '1em',
-        nestedBackground: isDarkMode ? '#0a0a0a' : '#fafafa',
-        arrow: {
-          size: '1.1em',
-          color: isDarkMode ? '#666666' : '#999999',
-        },
-      },
-      typography: {
-        fontSize: '16px',
-        lineHeight: '1.6em',
-        fontWeightRegular: '400',
-        fontWeightBold: '600',
-        fontWeightLight: '300',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-        smoothing: 'antialiased',
-        optimizeSpeed: true,
-        headings: {
-          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-          fontWeight: '600',
-          lineHeight: '1.4em',
-        },
-        code: {
-          fontSize: '14px',
-          fontFamily: '"SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace',
-          lineHeight: '1.5em',
-          fontWeight: '400',
-          color: '#F6821F',
-          backgroundColor: isDarkMode ? '#1a1a1a' : '#f5f5f5',
-          wrap: false,
-        },
-        links: {
-          color: '#F6821F',
-          visited: '#e57310',
-          hover: '#ff9940',
-          textDecoration: 'none',
-        },
-      },
-      sidebar: {
-        backgroundColor: isDarkMode ? '#000000' : '#ffffff',
-        width: '280px',
-        textColor: isDarkMode ? '#f5f5f5' : '#1a1a1a',
-        activeTextColor: '#F6821F',
-        groupItems: {
-          activeBackgroundColor: isDarkMode ? '#1a1a1a' : '#fff5ed',
-          activeTextColor: '#F6821F',
-          textTransform: 'none',
-        },
-        level1Items: {
-          activeBackgroundColor: isDarkMode ? '#1a1a1a' : '#fff5ed',
-          activeTextColor: '#F6821F',
-          textTransform: 'none',
-        },
-        arrow: {
-          size: '1.2em',
-          color: isDarkMode ? '#666666' : '#999999',
-        },
-      },
-      logo: {
-        maxHeight: '50px',
-        maxWidth: '200px',
-        gutter: '20px',
-      },
-      rightPanel: {
-        backgroundColor: isDarkMode ? '#0a0a0a' : '#1a1a1a',
-        width: '40%',
-        textColor: '#f5f5f5',
-      },
-      codeBlock: {
-        backgroundColor: isDarkMode ? '#000000' : '#1a1a1a',
-      },
-    };
-    
-    // Initialize Redoc with custom theme
-    Redoc.init(
-      '/openapi.yaml',
-      {
-        scrollYOffset: 0,
-        hideDownloadButton: false,
-        disableSearch: false,
-        expandResponses: '200,201',
-        requiredPropsFirst: true,
-        sortPropsAlphabetically: false,
-        showExtensions: true,
-        nativeScrollbars: false,
-        pathInMiddlePanel: false,
-        untrustedSpec: false,
-        hideHostname: false,
-        expandSingleSchemaField: true,
-        jsonSampleExpandLevel: 2,
-        hideSchemaTitles: false,
-        simpleOneOfTypeLabel: false,
-        payloadSampleIdx: 0,
-        theme: theme,
-      },
-      document.getElementById('redoc-container')
-    );
-    
-    // Listen for theme changes and reload
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      location.reload();
-    });
-  </script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Social Media API • Cloudflare API Shield Demo</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+Mono:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orbitron:wght@400..900&family=Oxanium:wght@200..800&family=Poiret+One&family=Quicksand:wght@300..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css" />
+    <!-- Scalar (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+  </head>
+  <body>
+    <!-- Scalar Mount - Full Viewport -->
+    <div id="app"></div>
+
+    <script>
+  // Create Scalar API Reference
+  Scalar.createApiReference('#app', {
+    url: './openapi.yaml',
+    layout: 'modern',
+    theme: 'kepler',
+    darkMode: true,
+    hideDarkModeToggle: true,
+    documentDownloadType: 'both',
+    showOperationId: false,
+    orderSchemaPropertiesBy: 'alpha',
+    orderRequiredPropertiesFirst: true,
+    expandAllResponses: false,
+    persistAuth: true,
+    // Add more code snippet languages including JSON
+    defaultHttpClient: {
+      targetKey: 'shell',
+      clientKey: 'curl'
+    },
+    // Enable all available code generation targets
+    clients: [
+      'shell',      // curl
+      'node',       // JavaScript/Node.js
+      'python',     // Python
+      'php',        // PHP
+      'go',         // Go
+      'ruby',       // Ruby
+      'java',       // Java
+      'csharp',     // C#
+      'http'        // Raw HTTP (closest to JSON format)
+    ],
+    metaData: {
+      title: 'Social Media API • Cloudflare API Shield Demo',
+      description: 'Interactive documentation for a JWT-secured social API with tiers and social features.',
+    },
+    customCss: `
+      /* Apply Quicksand globally to all Scalar elements */
+      * {
+        font-family: 'Quicksand', sans-serif !important;
+      }
+      
+      /* Code blocks use monospace */
+      pre, code, pre *, code * {
+        font-family: 'Fira Code', 'Source Code Pro', monospace !important;
+      }
+      
+      /* Align panels - remove ALL spacing from right panel */
+      .scalar-api-client,
+      .scalar-api-client__content,
+      .scalar-api-client__header,
+      [class*="ApiClient"],
+      [class*="api-client"],
+      [class*="ReferenceLayout"] > div:last-child,
+      [class*="reference-layout"] > div:last-child {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+      }
+      
+      /* Force both panels to align at top */
+      .scalar-content,
+      .scalar-api-client,
+      [class*="ReferenceLayout"] > div {
+        align-self: flex-start !important;
+        vertical-align: top !important;
+      }
+      
+      /* Remove any gap in the layout container */
+      [class*="ReferenceLayout"],
+      [class*="reference-layout"] {
+        align-items: flex-start !important;
+      }
+      
+      :root { --scalar-radius: 14px; --scalar-shadow-2: 0 12px 24px rgba(0,0,0,.10); }
+      .scalar-card, .scalar-panel { border-radius: var(--scalar-radius); box-shadow: var(--scalar-shadow-2); }
+      pre, code { border-radius: 12px !important; }
+      .copy-button { border-radius: 10px !important; }
+      .operation-header, .endpoint-header { border-radius: 12px !important; }
+    `
+  });
+
+</script>
+  </body>
 </html>

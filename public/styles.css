@@ -1,0 +1,17 @@
+/* ---- Reset for full viewport Scalar ---- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; width: 100%; overflow: hidden; }
+body {
+  font-family: 'Quicksand', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scalar container takes full viewport */
+#app {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+}
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }

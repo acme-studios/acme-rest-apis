@@ -12,9 +12,9 @@ These scripts help you set up, populate, and test your API with data and realist
 
 ## Scripts
 
-### 0. Setup Scripts (New!)
+### 1. Setup Scripts
 
-#### `setup-local.sh` - One-command local setup
+#### `setup-local.sh` - Local Development Setup
 Automates the entire local development setup process.
 
 **What it does:**
@@ -28,14 +28,14 @@ Automates the entire local development setup process.
 ./scripts/setup-local.sh
 ```
 
-After running, just do:
+After running:
 ```bash
 npm run dev
 ```
 
 ---
 
-#### `setup-remote.sh` - One-command remote deployment
+#### `setup-remote.sh` - Remote Deployment
 Automates the entire remote deployment process.
 
 **What it does:**
@@ -51,7 +51,7 @@ Automates the entire remote deployment process.
 
 ---
 
-### 1. Seed Data (`seed-data.js`)
+### 2. Seed Data (`seed-data.js`)
 
 Populates your database with initial test data.
 
@@ -63,54 +63,11 @@ Populates your database with initial test data.
 
 **Usage:**
 ```bash
-# Basic usage
-node scripts/seed-data.js https://your-worker.workers.dev
+# Remote deployment
+node scripts/seed-data.js https://api-shield.namer01.cfpartnerskyflash.com
 
 # Local development
 node scripts/seed-data.js http://localhost:8787
-```
-
-**Output:**
-```
-🌱 Starting seed data generation...
-📍 Target: https://your-worker.workers.dev
-
-✅ API is reachable
-
-📝 Creating users...
-✅ Created user: alicejohnson (free)
-✅ Created user: bobsmith (premium)
-...
-
-📄 Creating posts...
-✅ alicejohnson created post 1
-✅ bobsmith created post 2
-...
-
-❤️  Creating likes...
-✅ alicejohnson liked 5 posts
-...
-
-💬 Creating comments...
-✅ bobsmith commented on 3 posts
-...
-
-👥 Creating follows...
-✅ charliebrown followed 4 users
-...
-
-🔄 Creating shares (premium users only)...
-✅ bobsmith shared 2 posts
-...
-
-✅ Seed data generation complete!
-
-📊 Summary:
-   - Users: 8
-   - Posts: 24
-   - Likes, comments, follows, and shares created
-
-🎉 Your API is now populated with sample data!
 ```
 
 **Test Users Created:**
@@ -126,9 +83,11 @@ node scripts/seed-data.js http://localhost:8787
 | grace@example.com | SecurePass123! | gracelee | premium |
 | henry@example.com | SecurePass123! | henrydavis | free |
 
-### 2. Traffic Simulation (`simulate-traffic.js`)
+---
 
-Simulates realistic user activity to generate metrics for Cloudflare dashboard.
+### 3. Traffic Simulation (`simulate-traffic.js`)
+
+Simulates realistic user activity.
 
 **What it does:**
 - Logs in test users
@@ -144,13 +103,13 @@ Simulates realistic user activity to generate metrics for Cloudflare dashboard.
 **Usage:**
 ```bash
 # Run indefinitely (Ctrl+C to stop)
-node scripts/simulate-traffic.js https://your-worker.workers.dev
+node scripts/simulate-traffic.js https://api-shield.namer01.cfpartnerskyflash.com
 
 # Activity every 30 seconds
-node scripts/simulate-traffic.js https://your-worker.workers.dev 30
+node scripts/simulate-traffic.js https://api-shield.namer01.cfpartnerskyflash.com 30
 
 # Run for 60 minutes, activity every 30 seconds
-node scripts/simulate-traffic.js https://your-worker.workers.dev 30 60
+node scripts/simulate-traffic.js https://api-shield.namer01.cfpartnerskyflash.com 30 60
 
 # Local development
 node scripts/simulate-traffic.js http://localhost:8787 10
@@ -161,92 +120,131 @@ node scripts/simulate-traffic.js http://localhost:8787 10
 2. `interval-seconds` - Seconds between activities (default: 60)
 3. `duration-minutes` - How long to run (default: indefinite)
 
-**Output:**
-```
-🎬 Traffic Simulation Starting...
-📍 Target: https://your-worker.workers.dev
-⏱️  Interval: 30 seconds
-⏰ Duration: 60 minutes
-
-🔐 Logging in test users...
-✅ Logged in: alice@example.com (free)
-✅ Logged in: bob@example.com (premium)
-✅ Logged in: charlie@example.com (enterprise)
-
-📊 Found 24 existing posts
-
-⏰ 12:30:15 PM - Simulating activity...
-📝 alice@example.com created a post
-
-⏰ 12:30:45 PM - Simulating activity...
-❤️  bob@example.com liked post 5
-
-⏰ 12:31:15 PM - Simulating activity...
-💬 charlie@example.com commented on post 12
-
-⏰ 12:31:45 PM - Simulating activity...
-👥 alice@example.com followed bob@example.com
-
-⏰ 12:32:15 PM - Simulating activity...
-🔄 bob@example.com shared post 8
-```
-
 **Stop Simulation:**
 Press `Ctrl+C` to stop gracefully.
 
+---
+
 ## Workflow
 
-### Initial Setup
+### Initial Setup - Local
 ```bash
-# 1. Deploy your API
-npm run deploy
+# 1. Run setup script
+./scripts/setup-local.sh
 
-# 2. Run migrations
-wrangler d1 migrations apply acme-rest-db --remote
+# 2. Start dev server
+npm run dev
 
-# 3. Seed initial data
-node scripts/seed-data.js https://your-worker.workers.dev
+# 3. Seed data
+node scripts/seed-data.js http://localhost:8787
 ```
 
-### Generate Dashboard Metrics
+### Initial Setup - Remote
 ```bash
-# Run traffic simulation for 2 hours (activity every 30 seconds)
-node scripts/simulate-traffic.js https://your-worker.workers.dev 30 120
+# 1. Run setup script
+./scripts/setup-remote.sh
+
+# 2. Seed data
+node scripts/seed-data.js https://api-shield.namer01.cfpartnerskyflash.com
 ```
 
-### Testing Rate Limiting
+### Generate Traffic
 ```bash
-# High-frequency traffic (every 5 seconds) to test rate limits
-node scripts/simulate-traffic.js https://your-worker.workers.dev 5 10
+# Run for 2 hours (activity every 30 seconds)
+node scripts/simulate-traffic.js https://api-shield.namer01.cfpartnerskyflash.com 30 120
 ```
+
+---
+
+## Scheduled Traffic with Cloudflare Workers Cron
+
+You can schedule traffic simulation directly in your Worker using Cloudflare's cron triggers.
+
+### Add Cron Trigger to wrangler.jsonc
+
+```jsonc
+{
+  "name": "api-shield",
+  // ... other config ...
+  "triggers": {
+    "crons": ["0 * * * *"]  // Run every hour
+  }
+}
+```
+
+### Create Cron Handler in src/index.ts
+
+```typescript
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    // Your existing API handler
+    return app.fetch(request, env);
+  },
+
+  async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
+    // Simulate traffic on cron schedule
+    console.log('Cron trigger fired:', new Date(event.scheduledTime).toISOString());
+    
+    // Example: Create a post from a random user
+    try {
+      const users = await env.DB.prepare('SELECT * FROM users LIMIT 5').all();
+      if (users.results.length > 0) {
+        const randomUser = users.results[Math.floor(Math.random() * users.results.length)];
+        await env.DB.prepare(
+          'INSERT INTO posts (user_id, content, visibility) VALUES (?, ?, ?)'
+        ).bind(randomUser.id, `Automated post at ${new Date().toISOString()}`, 'public').run();
+        console.log(`Created post for user ${randomUser.id}`);
+      }
+    } catch (error) {
+      console.error('Cron job error:', error);
+    }
+  }
+};
+```
+
+### Cron Schedule Examples
+
+```jsonc
+// Every hour
+"crons": ["0 * * * *"]
+
+// Every 30 minutes
+"crons": ["*/30 * * * *"]
+
+// Every day at midnight UTC
+"crons": ["0 0 * * *"]
+
+// Multiple schedules
+"crons": ["0 */6 * * *", "0 0 * * *"]
+```
+
+### Deploy with Cron
+```bash
+wrangler deploy
+```
+
+### View Cron Logs
+```bash
+wrangler tail
+```
+
+---
 
 ## Use Cases
 
-### 1. Demo Preparation
+### Demo Preparation
 ```bash
 # Populate with realistic data
-node scripts/seed-data.js https://your-worker.workers.dev
+node scripts/seed-data.js https://api-shield.namer01.cfpartnerskyflash.com
 
-# Let it run for 30 minutes before demo
-node scripts/simulate-traffic.js https://your-worker.workers.dev 60 30
+# Run traffic for 30 minutes
+node scripts/simulate-traffic.js https://api-shield.namer01.cfpartnerskyflash.com 60 30
 ```
 
-### 2. Load Testing
-```bash
-# Aggressive traffic to test rate limiting
-node scripts/simulate-traffic.js https://your-worker.workers.dev 2 5
-```
-
-### 3. Dashboard Metrics
-```bash
-# Run overnight to generate rich analytics
-node scripts/simulate-traffic.js https://your-worker.workers.dev 45 480
-```
-
-### 4. Continuous Background Activity
+### Continuous Background Activity
 ```bash
 # Run indefinitely in background (Linux/Mac)
-nohup node scripts/simulate-traffic.js https://your-worker.workers.dev 120 > traffic.log 2>&1 &
+nohup node scripts/simulate-traffic.js https://api-shield.namer01.cfpartnerskyflash.com 120 > traffic.log 2>&1 &
 
 # Check logs
 tail -f traffic.log
@@ -255,90 +253,25 @@ tail -f traffic.log
 pkill -f simulate-traffic
 ```
 
-## Advanced: Scheduled Traffic with Cron
-
-### Linux/Mac Cron
-```bash
-# Edit crontab
-crontab -e
-
-# Add entry to run every hour
-0 * * * * cd /path/to/api-shield && node scripts/simulate-traffic.js https://your-worker.workers.dev 30 5
-
-# Or every 30 minutes
-*/30 * * * * cd /path/to/api-shield && node scripts/simulate-traffic.js https://your-worker.workers.dev 20 3
-```
-
-### GitHub Actions (Scheduled Workflow)
-```yaml
-# .github/workflows/simulate-traffic.yml
-name: Simulate API Traffic
-
-on:
-  schedule:
-    - cron: '0 * * * *'  # Every hour
-  workflow_dispatch:  # Manual trigger
-
-jobs:
-  simulate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - run: node scripts/simulate-traffic.js ${{ secrets.WORKER_URL }} 30 5
-```
-
-## Monitoring Dashboard Metrics
-
-After running traffic simulation, check:
-
-### Cloudflare Dashboard
-1. **Workers & Pages** → Your Worker → **Metrics**
-   - Requests per second
-   - Success rate
-   - CPU time
-   - Duration
-
-2. **Security** → **API Shield** → **Analytics**
-   - JWT validation success/failure
-   - Rate limit hits
-   - Schema validation errors
-
-3. **Analytics** → **Traffic**
-   - Geographic distribution
-   - Status codes
-   - Top endpoints
+---
 
 ## Troubleshooting
 
 ### "API is not reachable"
 - Check Worker URL is correct
 - Ensure Worker is deployed: `wrangler deploy`
-- Test manually: `curl https://your-worker.workers.dev/health`
+- Test manually: `curl https://api-shield.namer01.cfpartnerskyflash.com/health`
 
 ### "No users logged in"
 - Run seed script first: `node scripts/seed-data.js <url>`
 - Check database has users: `wrangler d1 execute acme-rest-db --remote --command "SELECT * FROM users;"`
-
-### Rate Limiting Errors
-- Expected behavior! Shows rate limiting is working
-- Adjust interval: use higher seconds between activities
-- Check tier limits in code
 
 ### Script Stops Unexpectedly
 - Check Worker logs: `wrangler tail`
 - Look for errors in console output
 - Verify database isn't full (D1 limits)
 
-## Tips
-
-1. **Start Small**: Run seed script once, then short traffic bursts
-2. **Monitor Costs**: Check Cloudflare usage to stay within free tier
-3. **Vary Intervals**: Mix fast (5s) and slow (120s) traffic for realistic patterns
-4. **Use Logs**: `wrangler tail` to see real-time Worker logs
-5. **Clean Data**: Delete and re-seed if data gets messy
+---
 
 ## Clean Up
 
@@ -355,14 +288,15 @@ wrangler d1 execute acme-rest-db --remote --command "
 "
 
 # Re-seed
-node scripts/seed-data.js https://your-worker.workers.dev
+node scripts/seed-data.js https://api-shield.namer01.cfpartnerskyflash.com
 ```
 
-## Next Steps
+---
 
-1. Run seed script to populate data
-2. Test endpoints manually with Postman
-3. Start traffic simulation
-4. Monitor Cloudflare dashboard
-5. Configure API Shield features
-6. Test rate limiting with high-frequency traffic
+## Tips
+
+1. **Start Small**: Run seed script once, then short traffic bursts
+2. **Vary Intervals**: Mix fast (5s) and slow (120s) traffic for realistic patterns
+3. **Use Logs**: `wrangler tail` to see real-time Worker logs
+4. **Clean Data**: Delete and re-seed if data gets messy
+5. **Cron Jobs**: Use Cloudflare Workers cron triggers for automated traffic

@@ -32,14 +32,14 @@ npm run dev
 
 ## API Documentation
 
-Interactive API documentation powered by Scalar:
+Interactive API documentation powered by Stoplight Elements:
 - Beautiful light and dark themes
 - Try endpoints directly from docs
 - Copy-paste code examples
 - Real-time request/response testing
 - Comprehensive endpoint reference
 
-**View locally:** `http://localhost:8787` after running `npm run dev`
+View locally: `http://localhost:8787` after running `npm run dev`
 
 ## Testing
 
